@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:external_app_launcher/external_app_launcher.dart';
 
@@ -13,20 +15,31 @@ class MyApp extends StatefulWidget {
 }
 
 class MyAppState extends State<MyApp> {
+  Timer? _timer;
+
   @override
   void initState() {
     init();
     super.initState();
+    _timer = Timer.periodic(const Duration(seconds: 30), (timer) {
+      init();
+    });
+  }
+
+  @override
+  void dispose() {
+    // Cancelar el Timer cuando el widget se destruye
+    _timer?.cancel();
+    super.dispose();
   }
 
   void init() async {
     final ok = await LaunchApp.isAppInstalled(
-      androidPackageName: 'com.diazcode.premiosrdd',
+      androidPackageName: 'com.diazcode.lottery_screen',
     );
-    print(ok);
     if (ok) {
       await LaunchApp.openApp(
-        androidPackageName: 'com.diazcode.premiosrdd',
+        androidPackageName: 'com.diazcode.lottery_screen',
         openStore: false,
       );
     }
@@ -39,11 +52,14 @@ class MyAppState extends State<MyApp> {
       theme: ThemeData.dark(),
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Launcher'),
+          title: const Text('Launcher Lottery'),
         ),
         body: Center(
-            child: FilledButton.tonal(
-                onPressed: init, child: const Text("Abrir"))),
+            child: FilledButton.icon(
+          onPressed: init,
+          label: const Text("Open"),
+          icon: const Icon(Icons.open_in_new),
+        )),
       ),
     );
   }

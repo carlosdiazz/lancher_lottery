@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <queries>
-        <package android:name="com.diazcode.premiosrdd" /> // your android package name
+        <package android:name="com.diazcode.lottery_screen" />
     </queries>
 
     <application
