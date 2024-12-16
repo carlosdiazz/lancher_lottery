@@ -1,10 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:external_app_launcher/external_app_launcher.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
   runApp(const MyApp());
 }
 
@@ -19,10 +21,9 @@ class MyAppState extends State<MyApp> {
 
   @override
   void initState() {
-    init();
     super.initState();
-    _timer = Timer.periodic(const Duration(seconds: 30), (timer) {
-      init();
+    _timer = Timer.periodic(const Duration(seconds: 30), (timer) async {
+      await init();
     });
   }
 
@@ -33,7 +34,7 @@ class MyAppState extends State<MyApp> {
     super.dispose();
   }
 
-  void init() async {
+  Future<void> init() async {
     final ok = await LaunchApp.isAppInstalled(
       androidPackageName: 'com.diazcode.lottery_screen',
     );
@@ -56,7 +57,9 @@ class MyAppState extends State<MyApp> {
         ),
         body: Center(
             child: FilledButton.icon(
-          onPressed: init,
+          onPressed: () {
+            init();
+          },
           label: const Text("Open"),
           icon: const Icon(Icons.open_in_new),
         )),

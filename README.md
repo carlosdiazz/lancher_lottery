@@ -14,3 +14,6 @@ Ejecutamos
 ## Para cambiar el Splash
 Ejecutamos:
 ```dart run flutter_native_splash:create```
+
+## Para generar el APK
+```flutter build apk --release```
